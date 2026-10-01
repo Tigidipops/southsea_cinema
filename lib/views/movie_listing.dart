@@ -17,7 +17,7 @@ class MovieListing extends StatelessWidget {
       ),
       drawer: const NavDrawer(),
       body: Center(
-          child: Movie('Primetime', 15, 110, "Friday 2 Oct 2026", "16:00"), // NEW
+          child: Movie('Resident Evil', 'Racoon city, zombies and a delivery mission', '15', "Friday 2 Oct 2026", "16:00", "17:50"), // NEW
         ),
     );
   }
