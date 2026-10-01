@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Movie extends StatelessWidget {
+class Movie extends StatefulWidget {
   const Movie(this.title, this.description, this.rating, this.date, this.time, this.endTime, {super.key});
 
   final String title;
@@ -11,6 +11,17 @@ class Movie extends StatelessWidget {
   final String endTime;
 
   @override
+  State<Movie> createState() {
+    // TODO: implement createElement
+    return _MovieState();
+  }
+  
+}
+
+class _MovieState extends State<Movie> {
+  int ticketAmount = 1;
+
+  @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
@@ -19,25 +30,37 @@ class Movie extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget> [
           Text(
-            '$title ($rating)\n',
+            '${widget.title} (${widget.rating})\n',
             style: TextStyle(fontSize: 26),
           ),
           Text(
             'SouthSea Cinema Room\n\n'
-            '$date, $time - ends at $endTime\n\n\n'
-            '$description \n'
+            '${widget.date}, ${widget.time} - ends at ${widget.endTime}\n\n\n'
+            '${widget.description} \n'
             'Please note that Discounts / Membership Benefits will be applied once you have selected your tickets\n\n'
-            'Select Quantites (Up to 5 in total)',
+            'Select Quantites (Up to 5 in total)\n\n',
             style: TextStyle(fontSize: 18),
           ),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text('Choose Quantity'),
+          DropdownMenu<int>(
+            initialSelection: 0,
+            onSelected: (int? value) {
+              if (value != null) {
+                setState(() {
+                  ticketAmount = value;
+                });
+              }
+            },
+            dropdownMenuEntries: [
+              DropdownMenuEntry(value: 1, label: '1 Ticket'),
+              DropdownMenuEntry(value: 2, label: '2 Tickets'),
+              DropdownMenuEntry(value: 3, label: '3 Tickets'),
+              DropdownMenuEntry(value: 4, label: '4 Tickets'),
+              DropdownMenuEntry(value: 5, label: '5 Tickets')
+            ],
           ),
         ],
       ),
     );
   }
-  
 }
 
