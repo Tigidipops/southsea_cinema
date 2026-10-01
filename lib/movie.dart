@@ -20,6 +20,7 @@ class Movie extends StatefulWidget {
 
 class _MovieState extends State<Movie> {
   int ticketAmount = 1;
+  String bookingString = "";
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +59,21 @@ class _MovieState extends State<Movie> {
               DropdownMenuEntry(value: 5, label: '5 Tickets')
             ],
           ),
+          ElevatedButton(
+            onPressed: _addToOrder,
+            child: const Text('ADD TO ORDER'),
+          ),
+          Text(
+            bookingString
+          )
         ],
       ),
     );
   }
+
+  void _addToOrder() {
+     setState(() => bookingString = "Added $ticketAmount tickets to Order.");
+  }
+
 }
 
