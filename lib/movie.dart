@@ -53,6 +53,7 @@ class _MovieState extends State<Movie> {
               spacing: 14,
               children: [
                 DropdownMenu<int>(
+                  requestFocusOnTap: false,
                   inputDecorationTheme: InputDecorationTheme(
                     filled: true,
                     fillColor: Colors.white,
