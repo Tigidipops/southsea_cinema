@@ -84,7 +84,7 @@ class _MovieState extends State<Movie> {
                 iconSize: 10,
                 textStyle: cinemaMovieDescriptionStyle,
                 foregroundColor: cinemaFontWhite,
-                backgroundColor: cinemaBrandLight
+                backgroundColor: cinemaBrand
               ),
             ),
             Text(
