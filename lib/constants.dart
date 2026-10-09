@@ -21,3 +21,5 @@ const TextStyle cinemaMovieDescriptionStyle = TextStyle(
   color: cinemaFontWhite,
   fontSize: 18,
 );
+
+const largeScreenMinWidth = 600;

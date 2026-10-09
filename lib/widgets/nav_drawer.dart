@@ -63,3 +63,31 @@ class DrawerTile extends StatelessWidget {
     );
   }
 }
+
+class AdaptiveLayout extends StatelessWidget {
+  const AdaptiveLayout({super.key, required this.layout});
+  final Widget layout;
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+    final width = size.width;
+    final textSizeMultiplier = width / largeScreenMinWidth;
+
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth < largeScreenMinWidth) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              textScaler: TextScaler.linear(textSizeMultiplier),
+            ),
+          child: layout
+          );
+        } else {
+          return layout;
+        }
+      },
+    );
+  }
+}
+
