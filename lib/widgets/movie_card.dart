@@ -21,7 +21,6 @@ class MovieCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               textBaseline: TextBaseline.alphabetic,
               children: [
-
                 Text(
                   movie.title,
                   style: const TextStyle(
@@ -30,9 +29,7 @@ class MovieCard extends StatelessWidget {
                     color: cinemaBrandDark,
                   ),
                 ),
-
                 const SizedBox(width: 12),
-
                 Text(
                   '(${movie.ageRating})',
                   style: const TextStyle(
@@ -43,48 +40,36 @@ class MovieCard extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 8),
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                Image.asset(
-                  movie.imagePath,
-                  width: 80,
-                  height: 120,
-                  fit: BoxFit.cover,
+            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Image.asset(
+                movie.imagePath,
+                width: 80,
+                height: 120,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  movie.synopsis,
+                  style: const TextStyle(color: cinemaFontWhite),
                 ),
-                
-                const SizedBox(width: 8),
-
-                Expanded(
-                  child: Text(
-                    movie.synopsis,
-                    style: const TextStyle(color: cinemaFontWhite),
-                  ),
-                ),
-                const SizedBox(height: 16),
-              ]
-            ),
-
+              ),
+              const SizedBox(height: 16),
+            ]),
             const SizedBox(height: 8),
-
             Text(
               'BOOK TICKETS',
               style: const TextStyle(
-              color: cinemaFontWhite,
+                color: cinemaFontWhite,
               ),
             ),
-
             const SizedBox(height: 8),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${movie.screeningTime}',
+                  movie.screeningTime,
                 ),
                 ElevatedButton(
                   onPressed: () {

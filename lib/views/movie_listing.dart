@@ -31,5 +31,3 @@ class MovieListing extends StatelessWidget {
     );
   }
 }
-
-

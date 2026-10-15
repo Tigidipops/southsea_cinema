@@ -78,11 +78,10 @@ class AdaptiveLayout extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         if (constraints.maxWidth < largeScreenMinWidth) {
           return MediaQuery(
-            data: MediaQuery.of(context).copyWith(
-              textScaler: TextScaler.linear(textSizeMultiplier),
-            ),
-          child: layout
-          );
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(textSizeMultiplier),
+              ),
+              child: layout);
         } else {
           return layout;
         }
@@ -90,4 +89,3 @@ class AdaptiveLayout extends StatelessWidget {
     );
   }
 }
-
