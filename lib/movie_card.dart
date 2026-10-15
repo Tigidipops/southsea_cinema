@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 
-class Movie extends StatefulWidget {
-  const Movie(this.title, this.description, this.rating, this.date, this.time, this.endTime, {super.key});
+class MovieCard extends StatefulWidget {
+  const MovieCard(this.title, this.description, this.rating, this.date, this.time, this.endTime, {super.key});
 
   final String title;
   final String description;
@@ -13,13 +13,13 @@ class Movie extends StatefulWidget {
   final String endTime;
 
   @override
-  State<Movie> createState() {
+  State<MovieCard> createState() {
     return _MovieState();
   }
   
 }
 
-class _MovieState extends State<Movie> {
+class _MovieState extends State<MovieCard> {
   int ticketAmount = 1;
   String bookingString = "";
 
