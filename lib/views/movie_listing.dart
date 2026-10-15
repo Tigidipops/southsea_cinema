@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
-import 'package:southsea_cinema/movie_card.dart';
+import 'package:southsea_cinema/models/movie.dart';
+import 'package:southsea_cinema/movie_order.dart';
+import 'package:southsea_cinema/repositories/movie_repository.dart';
+import 'package:southsea_cinema/widgets/movie_card.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 
 class MovieListing extends StatelessWidget {
-  const MovieListing({super.key});
+  const MovieListing({super.key, movie});
 
   @override
   Widget build(BuildContext context) {
+    final MovieRepository movieRepository = MovieRepository();
+    final List<Movie> movies = movieRepository.getMovies();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(appTitle, style: cinemaHeaderStyle),
@@ -16,9 +22,12 @@ class MovieListing extends StatelessWidget {
         elevation: 0,
       ),
       drawer: const NavDrawer(),
-      body: Center(
-          child: MovieCard('Resident Evil', 'Racoon city, zombies and a delivery mission', '15', "Friday 2 Oct 2026", "16:00", "17:50"), // NEW
-        ),
+      body: ListView.builder(
+        itemCount: movies.length,
+        itemBuilder: (context, index) {
+          return MovieCard(movie: movies[index]);
+        },
+      ),
     );
   }
 }
