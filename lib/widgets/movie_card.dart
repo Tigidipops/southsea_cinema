@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/movie.dart';
+import 'package:southsea_cinema/movie_order.dart';
 
 class MovieCard extends StatelessWidget {
   final Movie movie;
@@ -91,7 +92,7 @@ class MovieCard extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return Text('Movie Order Page for ${movie.title}');
+                          return MovieOrder(movie: movie);
                         },
                       ),
                     );

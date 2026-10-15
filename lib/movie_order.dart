@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
+import 'package:southsea_cinema/models/movie.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 
 class MovieOrder extends StatefulWidget {
-  const MovieOrder(this.title, this.description, this.rating, this.date, this.time, this.endTime, {super.key});
+  final Movie movie;
 
-  final String title;
-  final String description;
-  final String rating;
-  final String date;
-  final String time;
-  final String endTime;
+  const MovieOrder({super.key, required this.movie});
+
 
   @override
   State<MovieOrder> createState() {
@@ -25,85 +22,114 @@ class _MovieState extends State<MovieOrder> {
 
   @override
   Widget build(BuildContext context) {
-    return AdaptiveLayout(
-      layout: Container(
-        color: Color(0x00000000),
-        child: Padding(
-          padding: const EdgeInsets.all(16), 
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,              
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget> [
-              Text(
-                '${widget.title} (${widget.rating})\n',
-                style: TextStyle(fontSize: 32),
-              ),
-              Text(
-                'SouthSea Cinema Room\n\n'
-                '${widget.date}, ${widget.time} - ends at ${widget.endTime}\n\n\n'
-                '${widget.description} \n'
-                'Please note that Discounts / Membership Benefits will be applied once you have selected your tickets\n\n'
-                'Select Quantites (Up to 5 in total)\n\n',
-                style: cinemaMovieDescriptionStyle
-              ),
-              Text(
-                'Tickets\n',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Row(
-                spacing: 14,
-                children: [
-                  DropdownMenu<int>(
-                    requestFocusOnTap: false,
-                    inputDecorationTheme: InputDecorationTheme(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.zero
-                      ),
-                    ),
-                    textStyle: TextStyle(color: Colors.black),
-                    initialSelection: 0,
-                    onSelected: (int? value) {
-                      if (value != null) {
-                        setState(() {
-                          ticketAmount = value;
-                        });
-                      }
-                    },
-                    dropdownMenuEntries: [
-                      DropdownMenuEntry(value: 1, label: '1 Ticket'),
-                      DropdownMenuEntry(value: 2, label: '2 Tickets'),
-                      DropdownMenuEntry(value: 3, label: '3 Tickets'),
-                      DropdownMenuEntry(value: 4, label: '4 Tickets'),
-                      DropdownMenuEntry(value: 5, label: '5 Tickets')
-                    ],
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(appTitle, style: cinemaHeaderStyle),
+        backgroundColor: cinemaSurface,
+        iconTheme: const IconThemeData(color: cinemaBrand),
+        elevation: 0,
+      ),
+      endDrawer: const NavDrawer(),
+      body: AdaptiveLayout(
+        layout: Card(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          color: cinemaSurface,
+          margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+          child: Padding(
+            padding: const EdgeInsets.all(16), 
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,              
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget> [
+
                   Text(
-                    'Adult (£7.50)',
-                    style: TextStyle(fontSize: 19)
-                  )
-                ]
+                    '${widget.movie.title} (${widget.movie.ageRating})',
+                    style: TextStyle(fontSize: 32),
+                  ),
+
+                  Image.asset(
+                    widget.movie.imagePath,
+                    width: 120,
+                    height: 180,
+                    fit: BoxFit.cover,
+                  ),
+                  
+
+                  Text(
+                    'SouthSea Cinema Room\n'
+                    '${widget.movie.screeningTime}\n\n'
+                    '${widget.movie.synopsis} \n'
+                    'Please note that Discounts / Membership Benefits will be applied once you have selected your tickets\n',
+                    style: cinemaMovieDescriptionStyle
+                  ),
+
+                  Row(
+                    spacing: 14,
+                    children: [
+
+                      Text(
+                        'Tickets (£${widget.movie.ticketPrice} each)',
+                        style: TextStyle(fontSize: 19)
+                      ),
+
+                      DropdownMenu<int>(
+                        requestFocusOnTap: false,
+                        inputDecorationTheme: InputDecorationTheme(
+                          filled: true,
+                          fillColor: cinemaSurface,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.zero
+                          ),
+                        ),
+                        textStyle: TextStyle(color: cinemaFontWhite),
+                        initialSelection: 0,
+                        onSelected: (int? value) {
+                          if (value != null) {
+                            setState(() {
+                              ticketAmount = value;
+                            });
+                          }
+                        },
+                        dropdownMenuEntries: [
+                          DropdownMenuEntry(value: 0, label: '1 Ticket'),
+                          DropdownMenuEntry(value: 1, label: '2 Tickets'),
+                          DropdownMenuEntry(value: 2, label: '3 Tickets'),
+                          DropdownMenuEntry(value: 3, label: '4 Tickets'),
+                          DropdownMenuEntry(value: 4, label: '5 Tickets')
+                        ],
+                      ),
+
+                    ]
+                  ),
+
+                  SizedBox(height: 30),
+
+                  ElevatedButton( 
+                    onPressed: _addToOrder,
+                    style: ElevatedButton.styleFrom(
+                      shape: LinearBorder(),
+                      iconSize: 10,
+                      textStyle: cinemaMovieDescriptionStyle,
+                      foregroundColor: cinemaFontWhite,
+                      backgroundColor: cinemaBrand
+                    ),
+                    child: const Text('ADD TO ORDER'),
+                  ),
+
+                  Text(bookingString)
+
+                ],
               ),
-              SizedBox(height: 30),
-              ElevatedButton( 
-                onPressed: _addToOrder,
-                style: ElevatedButton.styleFrom(
-                  shape: LinearBorder(),
-                  iconSize: 10,
-                  textStyle: cinemaMovieDescriptionStyle,
-                  foregroundColor: cinemaFontWhite,
-                  backgroundColor: cinemaBrand
-                ),
-                child: const Text('ADD TO ORDER'),
-              ),
-              Text(bookingString)
-            ],
+            ),
           ),
         ),
       ),
     );
   } 
+  
 
   void _addToOrder() {
      setState(() => bookingString = "Added $ticketAmount tickets to Order.");
