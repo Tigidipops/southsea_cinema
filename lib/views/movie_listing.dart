@@ -2,11 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/movie.dart';
 import 'package:southsea_cinema/repositories/movie_repository.dart';
-import 'package:southsea_cinema/widgets/movie_card.dart';
+import 'package:southsea_cinema/movie_order.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 
-class MovieListing extends StatelessWidget {
-  const MovieListing({super.key, movie});
+class MovieListing extends StatefulWidget {
+  const MovieListing({super.key, this.movie});
+
+  final Movie? movie;
+
+  @override
+  State<MovieListing> createState() => _MovieListingState();
+}
+
+class _MovieListingState extends State<MovieListing> {
+  static Movie? lastSelectedMovie;
+  final MovieRepository movieRepository = MovieRepository();
+  late final List<Movie> movies;
+  Movie selectedMovie = MovieRepository().getMovies().first;
+
+  @override
+  void initState() {
+    super.initState();
+    movies = movieRepository.getMovies();
+    selectedMovie = widget.movie ?? lastSelectedMovie ?? selectedMovie;
+    lastSelectedMovie = selectedMovie;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +41,7 @@ class MovieListing extends StatelessWidget {
         elevation: 0,
       ),
       drawer: const NavDrawer(),
-      body: ListView.builder(
-        itemCount: movies.length,
-        itemBuilder: (context, index) {
-          return MovieCard(movie: movies[index]);
-        },
-      ),
+      body: MovieOrder(movie: selectedMovie),
     );
   }
 }
