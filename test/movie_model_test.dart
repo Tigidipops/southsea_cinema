@@ -57,4 +57,51 @@ void main() {
       expect(movieTwo.formattedPrice, '£10.00');
     });
   });
+
+  group('Movie JSON tests', () {
+    test('fromJson creates Movie instance from JSON', () {
+      final Map<String, dynamic> data = <String, dynamic>{
+        'id': '1',
+        'title': 'Fight Club',
+        'synopsis':
+            'The first rule of Fight Club is: You do not talk about Fight Club.',
+        'ageRating': '15',
+        'runtime': '2h 19m',
+        'screeningTime': '19:00',
+        'ticketPrice': 9.50,
+        'imagePath': 'assets/images/fight_club.jpeg',
+      };
+
+      final movie = Movie.fromJson(data);
+
+      expect(movie.id, '1');
+      expect(movie.title, 'Fight Club');
+      expect(movie.synopsis,
+          'The first rule of Fight Club is: You do not talk about Fight Club.');
+      expect(movie.ageRating, '15');
+      expect(movie.runtime, '2h 19m');
+      expect(movie.screeningTime, '19:00');
+      expect(movie.ticketPrice, 9.50);
+      expect(movie.imagePath, 'assets/images/fight_club.jpeg');
+      expect(movie.toJson(), data);
+    });
+
+    test('fromJson converts a whole-number to a double', () {
+      final Map<String, dynamic> data = <String, dynamic>{
+        'id': '1',
+        'title': 'Fight Club',
+        'synopsis':
+            'The first rule of Fight Club is: You do not talk about Fight Club.',
+        'ageRating': '15',
+        'runtime': '2h 19m',
+        'screeningTime': '19:00',
+        'ticketPrice': 10,
+        'imagePath': 'assets/images/fight_club.jpeg',
+      };
+
+      final movie = Movie.fromJson(data);
+      expect(movie.ticketPrice, 10.0);
+      expect(movie.ticketPrice, isA<double>());
+    });
+  });
 }

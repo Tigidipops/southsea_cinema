@@ -4,6 +4,7 @@ import 'package:southsea_cinema/repositories/movie_repository.dart';
 
 void main() {
   group('MovieRepository unit tests', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
     test('getMovies returns three movies', () {
       final movieRepository = MovieRepository();
       final List<Movie> movies = movieRepository.getMovies();
@@ -43,7 +44,7 @@ void main() {
       expect(interstellar.id, 'interstellar');
       expect(interstellar.title, 'Interstellar');
       expect(interstellar.synopsis,
-          'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.');
+          'A team of explorers travel through a wormhole in space in an attempt to ensure humanitys survival.');
       expect(interstellar.ageRating, '12A');
       expect(interstellar.runtime, '2h 49m');
       expect(interstellar.screeningTime, "Saturday 3 Oct 2026, 18:00 - 20:49");
@@ -70,6 +71,18 @@ void main() {
       final Movie? movie = repository.getMovieById('non-existent');
 
       expect(movie, isNull);
+    });
+
+     test('loadMoviesFromAsset reads the bundled JSON menu', () async {
+      final MovieRepository repository = MovieRepository();
+      final List<Movie> movies =
+          await repository.loadMoviesFromAsset();
+
+      expect(movies.length, 3);
+      expect(movies[0].id, 'resident');
+      expect(movies[1].id, 'deadpool');
+      expect(movies[2].id, 'interstellar');
+      expect(repository.getMovies(), movies);
     });
   });
 }
