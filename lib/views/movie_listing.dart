@@ -30,15 +30,9 @@ class _MovieListingState extends State<MovieListing> {
 
   @override
   Widget build(BuildContext context) {
-    final MovieRepository movieRepository = MovieRepository();
-    final List<Movie> movies = movieRepository.getMovies();
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text(appTitle, style: cinemaHeaderStyle),
-        backgroundColor: cinemaSurface,
-        iconTheme: const IconThemeData(color: cinemaBrand),
-        elevation: 0,
+        title: const Text(appTitle),
       ),
       drawer: const NavDrawer(),
       body: MovieOrder(movie: selectedMovie),
