@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:southsea_cinema/constants.dart';
+import 'package:southsea_cinema/models/basket_item.dart';
 import 'package:southsea_cinema/models/movie.dart';
+import 'package:southsea_cinema/repositories/basket_repository.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 import 'package:southsea_cinema/widgets/primary_button.dart';
 
@@ -95,6 +97,13 @@ class _MovieState extends State<MovieOrder> {
   }
 
   void _addToOrder() {
-    setState(() => bookingString = "Added $ticketAmount tickets to Order.");
+    final BasketItem item = BasketItem(
+      movie: widget.movie,
+      quantity: ticketAmount,
+    );
+    BasketRepository.instance.addItem(item);
+    setState(
+      () => bookingString = "Added $ticketAmount tickets to Order.",
+    );
   }
 }
