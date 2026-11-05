@@ -10,7 +10,7 @@ const Movie testMovie1 = Movie(
   ageRating: '15',
   runtime: '1h 50m',
   screeningTime: "Friday 2 Oct 2026, 16:00 - 17:50",
-  ticketPrice: 10.0,
+  ticketPrice: 8.0,
   imagePath: 'assets/images/resident_evil.jpeg',
 );
 
@@ -42,7 +42,7 @@ void main() {
       expect(cart.getTotalDue(), 0.0);
     });
 
-    test('adds items and calculates subtotal and delivery fee correctly', () {
+    test('adds items and calculates subtotal and service charge correctly', () {
       final BasketRepository cart = BasketRepository.instance;
       const BasketItem item1 = BasketItem(
         movie: testMovie1,
@@ -59,23 +59,30 @@ void main() {
       expect(cart.getItems().length, 2);
       expect(cart.getTotalItems(), 3);
       expect(cart.totalItemCount, 3);
-      expect(cart.getSubtotal(), 30.0);
+      expect(cart.getSubtotal(), 26.0);
       expect(cart.getServiceCharge(), 4.00);
-      expect(cart.getTotalDue(), 34.0);
+      expect(cart.getTotalDue(), 30.0);
     });
 
     test('removes items correctly', () {
-      final BasketRepository cart = BasketRepository.instance;
+      final BasketRepository basket = BasketRepository.instance;
       const BasketItem item = BasketItem(
         movie: testMovie1,
         quantity: 1,
       );
-      cart.addItem(item);
-      expect(cart.getItems().length, 1);
+      basket.addItem(item);
+      expect(basket.getItems().length, 1);
 
-      cart.removeItem(0);
-      expect(cart.getItems().length, 0);
-      expect(cart.getTotalDue(), 0.0);
+      basket.removeItem(0);
+      expect(basket.getItems().length, 0);
+      expect(basket.getTotalDue(), 0.0);
+
+      basket.addItem(item);
+      expect(basket.getItems().length, 1);
+      basket.clear();
+
+      expect(basket.getItems().length, 0);
+      expect(basket.getTotalDue(), 0.0);
     });
   });
 }
