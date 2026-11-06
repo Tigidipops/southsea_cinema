@@ -3,6 +3,7 @@ import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/models/user_settings.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 import 'package:southsea_cinema/widgets/primary_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});

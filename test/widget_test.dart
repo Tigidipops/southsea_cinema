@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/services.dart';
 import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/main.dart';
 import 'package:southsea_cinema/views/home_view.dart';
 import 'package:southsea_cinema/views/movie_listing.dart';
 
 void main() {
+  setUp(() {
+    rootBundle.clear();
+  });
   group('Southsea Cinema App Widget Tests', () {
     testWidgets('Basic app loading test', (WidgetTester tester) async {
       await tester.pumpWidget(const SouthseaCinemaApp());
+      await tester.pumpAndSettle();
       debugDumpApp();
       expect(find.text(appTitle), findsOneWidget);
       expect(find.byType(HomeView), findsOneWidget);
@@ -17,6 +22,7 @@ void main() {
     testWidgets('Display Movie cards and Booking buttons',
         (WidgetTester tester) async {
       await tester.pumpWidget(const SouthseaCinemaApp());
+      await tester.pumpAndSettle();
 
       expect(find.text('Resident Evil'),
           findsOneWidget); // CHANGE to how titles appear on screen
@@ -30,6 +36,7 @@ void main() {
     testWidgets('Booking button navigates to Movie Order page',
         (WidgetTester tester) async {
       await tester.pumpWidget(const SouthseaCinemaApp());
+      await tester.pumpAndSettle();
 
       expect(find.byType(HomeView), findsOneWidget);
       expect(find.byType(MovieListing), findsNothing);
