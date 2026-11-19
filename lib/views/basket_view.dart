@@ -256,7 +256,6 @@ class _BasketViewState extends State<BasketView> {
   String _formatDate(DateTime now) {
     final String day = now.day.toString().padLeft(2, '0');
     final String month = now.month.toString().padLeft(2, '0');
-    final String year = now.year.toString();
     final String hour = now.hour.toString().padLeft(2, '0');
     final String minute = now.minute.toString().padLeft(2, '0');
     return '$day/$month/${now.year} $hour:$minute';
