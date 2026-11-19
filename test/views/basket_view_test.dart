@@ -18,6 +18,30 @@ const Movie testMovie1 = Movie(
   ticketPrice: 10.0,
   imagePath: 'assets/images/resident_evil.jpeg',
 );
+
+const Movie testMovie2 = Movie(
+  id: 'deadpool',
+  title: 'Deadpool',
+  synopsis: 'A mercenary with a twisted sense of humour',
+  ageRating: '15',
+  runtime: '1h 50m',
+  screeningTime: "Friday 2 Oct 2026, 16:00 - 17:50",
+  ticketPrice: 10.0,
+  imagePath: 'assets/images/deadpool.jpeg',
+);
+
+const Movie testMovie3 = Movie(
+  id: 'interstellar',
+  title: 'Interstellar',
+  synopsis:
+      'A team of explorers travel through a wormhole in space in an attempt to ensure humanity\'s survival.',
+  ageRating: '12',
+  runtime: '2h 49m',
+  screeningTime: "Friday 2 Oct 2026, 19:00 - 21:49",
+  ticketPrice: 12.0,
+  imagePath: 'assets/images/interstellar.jpeg',
+);
+
 void main() {
   setUp(() async {
     BasketRepository.instance.clear();
@@ -108,5 +132,42 @@ void main() {
     final double newerY = tester.getTopLeft(find.text('Booking #1002')).dy;
     final double olderY = tester.getTopLeft(find.text('Booking #1001')).dy;
     expect(newerY, lessThan(olderY));
+  });
+
+  testWidgets('Deleting the middle film leaves the other two', (
+    WidgetTester tester,
+  ) async {
+    const BasketItem item1 = BasketItem(
+      movie: testMovie1,
+      quantity: 2,
+    );
+    const BasketItem item2 = BasketItem(
+      movie: testMovie2,
+      quantity: 1,
+    );
+    const BasketItem item3 = BasketItem(
+      movie: testMovie3,
+      quantity: 3,
+    );
+    BasketRepository.instance.addItem(item1);
+    BasketRepository.instance.addItem(item2);
+    BasketRepository.instance.addItem(item3);
+
+    await pumpBasket(tester);
+
+    expect(find.textContaining('Resident Evil'), findsOneWidget);
+    expect(find.textContaining('Deadpool'), findsOneWidget);
+    expect(find.textContaining('Interstellar'), findsOneWidget);
+
+    final Finder deleteButton =
+        find.byKey(ValueKey<String>('delete_${testMovie2.id}'));
+
+    await tester.ensureVisible(deleteButton);
+    await tester.tap(deleteButton);
+    await tester.pump();
+
+    expect(find.textContaining('Resident Evil'), findsOneWidget);
+    expect(find.textContaining('Deadpool'), findsNothing);
+    expect(find.textContaining('Interstellar'), findsOneWidget);
   });
 }

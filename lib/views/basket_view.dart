@@ -81,6 +81,7 @@ class _BasketViewState extends State<BasketView> {
             style: const TextStyle(color: cinemaFontWhite),
           ),
           IconButton(
+            key: ValueKey<String>('delete_${item.movie.id}'),
             icon: const Icon(Icons.delete_outline, color: cinemaFontWhite),
             style: IconButton.styleFrom(
               backgroundColor: cinemaBrand,
