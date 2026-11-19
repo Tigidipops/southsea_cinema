@@ -9,7 +9,7 @@ void main() {
     date: '01/01/2026 20:45',
   );
 
-  test('New bookingss omit database ids and conver to map', () {
+  test('New bookings omit database ids and convert to map', () {
     expect(booking.id, isNull);
     expect(booking.toMap(), <String, Object?>{
       'booking_number': 6532,
