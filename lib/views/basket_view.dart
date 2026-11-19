@@ -232,7 +232,7 @@ class _BasketViewState extends State<BasketView> {
         return;
       }
       setState(() {
-        _confirmationMessage = 'Booking $bookingNumber saved';
+        _confirmationMessage = 'Booking #$bookingNumber saved';
       });
     } catch (error) {
       if (!mounted) {
