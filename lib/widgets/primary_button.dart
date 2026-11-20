@@ -13,10 +13,11 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = cinemaPaletteFor(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: cinemaBrand,
-        foregroundColor: cinemaFontWhite,
+        backgroundColor: palette.brand,
+        foregroundColor: palette.fontPrimary,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),

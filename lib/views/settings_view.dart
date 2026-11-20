@@ -3,6 +3,7 @@ import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/widgets/nav_drawer.dart';
 import 'package:southsea_cinema/widgets/primary_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:southsea_cinema/main.dart';
 
 const String prefAddress = 'user_address';
 const String prefEmail = 'user_email';
@@ -24,6 +25,7 @@ class _SettingsViewState extends State<SettingsView> {
   late TextEditingController _patronNumberController;
   bool _receiveNewsletter = false;
   String _confirmationMessage = '';
+  ThemeMode _selectedThemeMode = ThemeMode.dark;
 
   Future<void> _loadSettings() async {
     final SharedPreferencesAsync prefs = SharedPreferencesAsync();
@@ -64,6 +66,15 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _selectedThemeMode = ThemeModeScope.maybeOf(context)?.themeMode ??
+        (Theme.of(context).brightness == Brightness.dark
+            ? ThemeMode.dark
+            : ThemeMode.light);
+  }
+
+  @override
   void initState() {
     super.initState();
     _addressController = TextEditingController();
@@ -90,6 +101,7 @@ class _SettingsViewState extends State<SettingsView> {
     await prefs.setString(prefEmail, email);
     await prefs.setInt(prefPatronNumber, patronNumber);
     await prefs.setBool(prefNewsletter, _receiveNewsletter);
+    await ThemeModeScope.maybeOf(context)?.setThemeMode(_selectedThemeMode);
 
     if (!mounted) {
       return;
@@ -101,17 +113,21 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void _cancel() {
+    final ThemeMode currentThemeMode =
+        ThemeModeScope.maybeOf(context)?.themeMode ?? _selectedThemeMode;
     setState(() {
       _addressController.clear();
       _emailController.clear();
       _patronNumberController.clear();
       _receiveNewsletter = false;
+      _selectedThemeMode = currentThemeMode;
       _confirmationMessage = '';
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final palette = cinemaPaletteFor(context);
     return Scaffold(
         appBar: AppBar(
           title: const Text(appTitle),
@@ -128,14 +144,14 @@ class _SettingsViewState extends State<SettingsView> {
               const SizedBox(height: 16),
               Text(
                 'Address',
-                style: TextStyle(fontSize: 16, color: cinemaFontMuted),
+                style: TextStyle(fontSize: 16, color: palette.fontMuted),
               ),
               TextField(
                 controller: _addressController,
                 maxLines: 3,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: cinemaSurface,
+                  fillColor: palette.surface,
                   border: const OutlineInputBorder(),
                   labelText: 'Delivery address',
                   hintText: 'Enter delivery address',
@@ -150,14 +166,14 @@ class _SettingsViewState extends State<SettingsView> {
               const SizedBox(height: 16),
               Text(
                 'Email Address',
-                style: TextStyle(fontSize: 16, color: cinemaFontMuted),
+                style: TextStyle(fontSize: 16, color: palette.fontMuted),
               ),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: cinemaSurface,
+                  fillColor: palette.surface,
                   border: const OutlineInputBorder(),
                   labelText: 'Email address',
                   hintText: 'Enter your email',
@@ -172,14 +188,14 @@ class _SettingsViewState extends State<SettingsView> {
               const SizedBox(height: 16),
               Text(
                 'Patron Number',
-                style: TextStyle(fontSize: 16, color: cinemaFontMuted),
+                style: TextStyle(fontSize: 16, color: palette.fontMuted),
               ),
               TextField(
                 controller: _patronNumberController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: cinemaSurface,
+                  fillColor: palette.surface,
                   border: const OutlineInputBorder(),
                   labelText: 'Patron Number',
                   hintText: 'Enter your patron number',
@@ -194,7 +210,7 @@ class _SettingsViewState extends State<SettingsView> {
               const SizedBox(height: 16),
               Text(
                 'Preferences',
-                style: TextStyle(fontSize: 16, color: cinemaFontMuted),
+                style: TextStyle(fontSize: 16, color: palette.fontMuted),
               ),
               Row(
                 children: [
@@ -211,14 +227,40 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                 ],
               ),
+              const SizedBox(height: 16),
+              Text(
+                'Appearance',
+                style: TextStyle(fontSize: 16, color: palette.fontMuted),
+              ),
+              const SizedBox(height: 8),
+              SegmentedButton<ThemeMode>(
+                segments: const [
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.light,
+                    label: Text('Light'),
+                    icon: Icon(Icons.light_mode),
+                  ),
+                  ButtonSegment<ThemeMode>(
+                    value: ThemeMode.dark,
+                    label: Text('Dark'),
+                    icon: Icon(Icons.dark_mode),
+                  ),
+                ],
+                selected: {_selectedThemeMode},
+                onSelectionChanged: (Set<ThemeMode> selection) {
+                  setState(() {
+                    _selectedThemeMode = selection.first;
+                  });
+                },
+              ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: cinemaSurface,
-                      foregroundColor: cinemaFontWhite,
+                      backgroundColor: palette.surface,
+                      foregroundColor: palette.fontPrimary,
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.zero,
                       ),

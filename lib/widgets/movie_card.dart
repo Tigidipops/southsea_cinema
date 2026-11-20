@@ -11,6 +11,7 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final palette = cinemaPaletteFor(context);
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Padding(
@@ -24,19 +25,19 @@ class MovieCard extends StatelessWidget {
               children: [
                 Text(
                   movie.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: cinemaBrandDark,
+                    color: palette.brandDark,
                   ),
                 ),
                 const SizedBox(width: 12),
                 Text(
                   '(${movie.ageRating})',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: cinemaFontMuted,
+                    color: palette.fontMuted,
                   ),
                 ),
               ],
@@ -53,7 +54,7 @@ class MovieCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   movie.synopsis,
-                  style: const TextStyle(color: cinemaFontWhite),
+                  style: TextStyle(color: palette.fontPrimary),
                 ),
               ),
               const SizedBox(height: 16),
@@ -61,8 +62,8 @@ class MovieCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               'BOOK TICKETS',
-              style: const TextStyle(
-                color: cinemaFontWhite,
+              style: TextStyle(
+                color: palette.fontPrimary,
               ),
             ),
             const SizedBox(height: 8),

@@ -24,6 +24,7 @@ class _BasketViewState extends State<BasketView> {
   String _confirmationMessage = '';
 
   Widget _buildHeader() {
+    final palette = cinemaPaletteFor(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -33,21 +34,21 @@ class _BasketViewState extends State<BasketView> {
             width: 100,
             child: Text(
               'Item',
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: cinemaFontWhite),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: palette.fontPrimary),
             ),
           ),
           Expanded(
             child: Text(
               'Details',
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: cinemaFontWhite),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: palette.fontPrimary),
             ),
           ),
           Text(
             'Price                ',
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, color: cinemaFontWhite),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: palette.fontPrimary),
           ),
         ],
       ),
@@ -55,6 +56,7 @@ class _BasketViewState extends State<BasketView> {
   }
 
   Widget _buildLineItem(BasketRepository basket, BasketItem item, int index) {
+    final palette = cinemaPaletteFor(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -66,25 +68,25 @@ class _BasketViewState extends State<BasketView> {
               item.quantity == 1
                   ? '${item.quantity} Ticket'
                   : '${item.quantity} Tickets',
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600, color: cinemaBrandDark),
+              style: TextStyle(
+                  fontWeight: FontWeight.w600, color: palette.brandDark),
             ),
           ),
           Expanded(
             child: Text(
               '${item.quantity} Standard\n ${item.movie.title}, ${item.movie.screeningTime}, Southsea Cinema Room',
-              style: const TextStyle(color: cinemaFontWhite),
+              style: TextStyle(color: palette.fontPrimary),
             ),
           ),
           Text(
             '£${(item.quantity * item.movie.ticketPrice).toStringAsFixed(2)}  ',
-            style: const TextStyle(color: cinemaFontWhite),
+            style: TextStyle(color: palette.fontPrimary),
           ),
           IconButton(
             key: ValueKey<String>('delete_${item.movie.id}'),
-            icon: const Icon(Icons.delete_outline, color: cinemaFontWhite),
+            icon: Icon(Icons.delete_outline, color: palette.fontPrimary),
             style: IconButton.styleFrom(
-              backgroundColor: cinemaBrand,
+              backgroundColor: palette.brand,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero,
               ),
@@ -101,11 +103,16 @@ class _BasketViewState extends State<BasketView> {
   }
 
   Widget _buildTotalRow(String label, String value, {bool emphasise = false}) {
+    final palette = cinemaPaletteFor(context);
     final TextStyle style;
     if (emphasise) {
-      style = const TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+      style = TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+        color: palette.fontPrimary,
+      );
     } else {
-      style = const TextStyle(color: cinemaFontWhite);
+      style = TextStyle(color: palette.fontPrimary);
     }
 
     return Padding(
@@ -122,8 +129,16 @@ class _BasketViewState extends State<BasketView> {
 
   Widget _buildBasketList(BasketRepository basket, List<BasketItem> items) {
     final List<Widget> children = [];
+    final palette = cinemaPaletteFor(context);
 
-    children.add(const Text('MY ORDER', style: cinemaHeaderStyle));
+    children.add(Text(
+      'MY ORDER',
+      style: TextStyle(
+        color: palette.fontPrimary,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    ));
     children.add(const SizedBox(height: 16));
     children.add(_buildHeader());
     children.add(const SizedBox(height: 8));
@@ -284,8 +299,9 @@ class _BasketViewState extends State<BasketView> {
   }
 
   Widget _buildBookingLine(Booking booking) {
+    final palette = cinemaPaletteFor(context);
     return Card(
-      color: cinemaSurface,
+      color: palette.surface,
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
@@ -297,25 +313,25 @@ class _BasketViewState extends State<BasketView> {
               children: [
                 Text(
                   'Booking #${booking.bookingNumber}',
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600, color: cinemaBrandDark),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: palette.brandDark),
                 ),
                 Text(
                   '£${booking.total.toStringAsFixed(2)}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: cinemaFontWhite,
+                    color: palette.fontPrimary,
                   ),
                 ),
               ],
             ),
             Text(
               booking.summary,
-              style: const TextStyle(color: cinemaFontWhite),
+              style: TextStyle(color: palette.fontPrimary),
             ),
             Text(
               booking.date,
-              style: const TextStyle(color: cinemaFontWhite),
+              style: TextStyle(color: palette.fontPrimary),
             ),
           ],
         ),
@@ -324,6 +340,7 @@ class _BasketViewState extends State<BasketView> {
   }
 
   Widget _buildBookingsSection() {
+    final palette = cinemaPaletteFor(context);
     if (_loading) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -331,7 +348,7 @@ class _BasketViewState extends State<BasketView> {
     if (_errorMessage.isNotEmpty) {
       return Text(
         _errorMessage,
-        style: const TextStyle(color: cinemaFontWhite),
+        style: TextStyle(color: palette.fontPrimary),
       );
     }
 
@@ -361,6 +378,7 @@ class _BasketViewState extends State<BasketView> {
   Widget build(BuildContext context) {
     final BasketRepository cart = BasketRepository.instance;
     final List<BasketItem> items = cart.getItems();
+    final palette = cinemaPaletteFor(context);
 
     final Widget content;
     if (items.isEmpty) {
@@ -395,7 +413,14 @@ class _BasketViewState extends State<BasketView> {
               children: [
                 content,
                 const SizedBox(height: 32),
-                const Text('PAST BOOKINGS', style: cinemaHeaderStyle),
+                Text(
+                  'PAST BOOKINGS',
+                  style: TextStyle(
+                    color: palette.fontPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 const SizedBox(height: 16),
                 _buildBookingsSection(),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:southsea_cinema/constants.dart';
 import 'package:southsea_cinema/widgets/primary_button.dart';
 
 void main() {
@@ -39,4 +40,25 @@ void main() {
 
     expect(wasPressed, isTrue);
   });
+
+  testWidgets('PrimaryButton uses the light palette foreground',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: cinemaLightTheme,
+        home: const Scaffold(
+            body: PrimaryButton(label: 'Order', onPressed: _noop)),
+      ),
+    );
+
+    final ElevatedButton button =
+        tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+    final ButtonStyle style = button.style!;
+    expect(
+      style.foregroundColor!.resolve(<WidgetState>{}),
+      cinemaLightPalette.fontPrimary,
+    );
+  });
 }
+
+void _noop() {}

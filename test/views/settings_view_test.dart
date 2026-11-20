@@ -40,6 +40,7 @@ void main() {
     expect(find.byType(TextField), findsNWidgets(3));
     expect(find.byType(Switch), findsOneWidget);
     expect(find.text('Save Settings'), findsOneWidget);
+    expect(find.byType(SegmentedButton<ThemeMode>), findsOneWidget);
   });
 
   testWidgets('Toggling switch and saving settings updates state', (
@@ -91,5 +92,27 @@ void main() {
     expect(find.text('12345'), findsOneWidget);
     final Switch reopenedSwitch = tester.widget<Switch>(find.byType(Switch));
     expect(reopenedSwitch.value, isTrue);
+  });
+
+  testWidgets('Appearance segmented button selects light mode', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        themeMode: ThemeMode.dark,
+        home: SettingsView(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final Finder lightMode = find.text('Light');
+    await tester.tap(lightMode);
+    await tester.pump();
+
+    final SegmentedButton<ThemeMode> button =
+        tester.widget<SegmentedButton<ThemeMode>>(
+      find.byType(SegmentedButton<ThemeMode>),
+    );
+    expect(button.selected, {ThemeMode.light});
   });
 }

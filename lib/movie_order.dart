@@ -23,12 +23,13 @@ class _MovieState extends State<MovieOrder> {
 
   @override
   Widget build(BuildContext context) {
+    final palette = cinemaPaletteFor(context);
     return AdaptiveLayout(
       layout: Card(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.zero,
         ),
-        color: cinemaSurface,
+        color: palette.surface,
         margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -52,7 +53,10 @@ class _MovieState extends State<MovieOrder> {
                     '${widget.movie.screeningTime}\n\n'
                     '${widget.movie.synopsis} \n'
                     'Please note that Discounts / Membership Benefits will be applied once you have selected your tickets\n',
-                    style: cinemaMovieDescriptionStyle),
+                    style: TextStyle(
+                      color: palette.fontPrimary,
+                      fontSize: 18,
+                    )),
                 Row(spacing: 14, children: [
                   Text('Tickets (${widget.movie.formattedPrice} each)',
                       style: TextStyle(fontSize: 19)),
@@ -60,11 +64,11 @@ class _MovieState extends State<MovieOrder> {
                     requestFocusOnTap: false,
                     inputDecorationTheme: InputDecorationTheme(
                       filled: true,
-                      fillColor: cinemaSurface,
+                      fillColor: palette.surface,
                       border:
                           OutlineInputBorder(borderRadius: BorderRadius.zero),
                     ),
-                    textStyle: TextStyle(color: cinemaFontWhite),
+                    textStyle: TextStyle(color: palette.fontPrimary),
                     initialSelection: 1,
                     onSelected: (int? value) {
                       if (value != null) {
